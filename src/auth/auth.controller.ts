@@ -15,4 +15,12 @@ export class AuthController {
 
     return this.authService.login(user);
   }
+
+  @Post('register')
+  async register(
+    @Body() body: { name: string; email: string; password: string; role?: string },
+  ) {
+    const role = body.role || 'user';
+    return this.authService.register(body.name, body.email, body.password, role);
+  }
 }
