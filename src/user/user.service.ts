@@ -1,13 +1,21 @@
+<<<<<<< HEAD
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+=======
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+>>>>>>> 45aef09 (my work before pull)
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
+<<<<<<< HEAD
     private readonly userRepository: Repository<User>,
   ) {}
 
@@ -56,4 +64,20 @@ export class UserService {
   async findByEmail(email: string) {
     return this.userRepository.findOne({ where: { email } });
   }
+=======
+    private userRepo: Repository<User>,
+  ) {}
+
+  findAll() {
+    return this.userRepo.find();
+  }
+
+  findOne(id: number) {
+    return this.userRepo.findOneBy({ id });
+  }
+
+  create(data: any) {
+    return this.userRepo.save(data);
+  }
+>>>>>>> 45aef09 (my work before pull)
 }

@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('user')
+@Entity('user') // مهم عشان يربط مع الجدول الموجود
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -8,18 +8,14 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
-  @Column()
-  password_hash: string;
+  @Column({ name: 'password_hash' })
+  password: string;
 
-  @Column({ default: 'user' })
   role: string;
 
-  @CreateDateColumn()
+  @Column()
   created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }

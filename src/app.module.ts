@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module'; 
-
+import { AuthModule } from './auth/auth.module';
+import { ReportModule } from './report/report.module';
+import { ReportVoteModule } from './reportVote/report-vote.module';
 
 @Module({
   imports: [
@@ -12,13 +13,15 @@ import { AuthModule } from './auth/auth.module';
       port: 3306,
       username: 'root',
       password: '',
-      database: 'advance_soft',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      database: 'soft2',
+      autoLoadEntities: true,
       synchronize: false,
     }),
 
     UserModule,
-    AuthModule, 
+    AuthModule,
+    ReportModule,
+    ReportVoteModule,
   ],
 })
 export class AppModule {}
