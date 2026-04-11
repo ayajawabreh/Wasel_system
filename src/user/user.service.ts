@@ -1,40 +1,41 @@
-<<<<<<< HEAD
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
-=======
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
->>>>>>> 45aef09 (my work before pull)
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-<<<<<<< HEAD
     private readonly userRepository: Repository<User>,
   ) {}
+async create(
+  name: string,
+  email: string,
+  password: string,
+  role = 'user',
+) {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  async create(name: string, email: string, password: string, role = 'user') {
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = this.userRepository.create({
-        name,
-        email,
-        password_hash: hashedPassword,
-        role,
-      });
-      return await this.userRepository.save(user);
-    } catch (error) {
-      console.error(error);
-      throw new InternalServerErrorException('Failed to create user');
-    }
+    const user = this.userRepository.create({
+      name,
+      email,
+      password_hash: hashedPassword,
+      role,
+    });
+
+    return await this.userRepository.save(user);
+  } catch (error) {
+    console.error(error);
+    throw new InternalServerErrorException('Failed to create user');
   }
-
+}
   async findAll() {
     return this.userRepository.find();
   }
@@ -45,11 +46,14 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, data: Partial<{ name: string; email: string; password: string; role: string }>) {
+  async update(
+    id: number,
+    data: Partial<{ name: string; email: string; password: string; role: string }>,
+  ) {
     if (data.password) {
-      data.password = await bcrypt.hash(data.password, 10);
-      data['password_hash'] = data.password;
+      const hashedPassword = await bcrypt.hash(data.password, 10);
       delete data.password;
+      (data as any).password_hash = hashedPassword;
     }
     await this.userRepository.update(id, data);
     return this.findOne(id);
@@ -64,20 +68,4 @@ export class UserService {
   async findByEmail(email: string) {
     return this.userRepository.findOne({ where: { email } });
   }
-=======
-    private userRepo: Repository<User>,
-  ) {}
-
-  findAll() {
-    return this.userRepo.find();
-  }
-
-  findOne(id: number) {
-    return this.userRepo.findOneBy({ id });
-  }
-
-  create(data: any) {
-    return this.userRepo.save(data);
-  }
->>>>>>> 45aef09 (my work before pull)
 }
