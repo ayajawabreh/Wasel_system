@@ -7,6 +7,7 @@ import { ReportModule } from './report/report.module';
 import { ReportVoteModule } from './reportVote/report-vote.module';
 import { CheckpointModule } from './checkpoint/checkpoint.module';
 import { IncidentModule } from './incident/incident.module';
+import { RouteModule } from './route/route.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { IncidentModule } from './incident/incident.module';
     ReportVoteModule,
     CheckpointModule,
     IncidentModule,
+    RouteModule,
   ],
 })
 export class AppModule {}
