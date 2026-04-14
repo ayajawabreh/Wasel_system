@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -14,28 +10,23 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-async create(
-  name: string,
-  email: string,
-  password: string,
-  role = 'user',
-) {
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = this.userRepository.create({
-      name,
-      email,
-      password_hash: hashedPassword,
-      role,
-    });
+  async create(name: string, email: string, password_hash: string, role = 'user') {
+    try {
+      const user = this.userRepository.create({
+        name,
+        email,
+        password_hash,
+        role,
+      });
 
-    return await this.userRepository.save(user);
-  } catch (error) {
-    console.error(error);
-    throw new InternalServerErrorException('Failed to create user');
+      return await this.userRepository.save(user);
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('Failed to create user');
+    }
   }
-}
+
   async findAll() {
     return this.userRepository.find();
   }
@@ -46,16 +37,15 @@ async create(
     return user;
   }
 
-  async update(
-    id: number,
-    data: Partial<{ name: string; email: string; password: string; role: string }>,
-  ) {
-    if (data.password) {
-      const hashedPassword = await bcrypt.hash(data.password, 10);
-      delete data.password;
-      (data as any).password_hash = hashedPassword;
+  async update(id: number, data: Partial<{ name: string; email: string; password: string; role: string }>) {
+    const updateData: any = { ...data };
+
+    if (updateData.password) {
+      updateData.password_hash = await bcrypt.hash(updateData.password, 10);
+      delete updateData.password;
     }
-    await this.userRepository.update(id, data);
+
+    await this.userRepository.update(id, updateData);
     return this.findOne(id);
   }
 

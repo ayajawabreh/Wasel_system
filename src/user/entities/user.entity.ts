@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('user') // مهم عشان يربط مع الجدول الموجود
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -12,8 +12,9 @@ export class User {
   email: string;
 
   @Column({ name: 'password_hash' })
-  password: string;
+  password_hash: string;
 
+  @Column()
   role: string;
 
   @Column()
