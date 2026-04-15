@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Checkpoint } from '../../checkpoint/entities/checkpoint.entity';
 
 @Entity('incident')
@@ -15,8 +23,12 @@ export class Incident {
   @Column()
   severity!: string;
 
-  @Column({ default: 'open' })
-  status!: string;
+ @Column({
+  type: 'enum',
+  enum: ['pending', 'resolved'],
+  default: 'pending',
+})
+status!: string;
 
   @Column({ nullable: true })
   description!: string;

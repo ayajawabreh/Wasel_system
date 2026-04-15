@@ -1,20 +1,28 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ReportModule } from './report/report.module';
 import { ReportVoteModule } from './reportVote/report-vote.module';
 import { CheckpointModule } from './checkpoint/checkpoint.module';
 import { IncidentModule } from './incident/incident.module';
+import { RouteModule } from './route/route.module';
+
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get('DB_HOST'),
@@ -25,8 +33,15 @@ import { IncidentModule } from './incident/incident.module';
         autoLoadEntities: true,
         synchronize: false,
       }),
-      inject: [ConfigService],
     }),
+
+    // ✅ Throttler GLOBAL
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60_000,
+        limit: 500, 
+      },
+    ]),
 
     UserModule,
     AuthModule,
@@ -34,6 +49,14 @@ import { IncidentModule } from './incident/incident.module';
     ReportVoteModule,
     CheckpointModule,
     IncidentModule,
+    RouteModule,
+  ],
+
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

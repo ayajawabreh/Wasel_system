@@ -1,29 +1,26 @@
-# Road Incidents & Checkpoint Management Task - COMPLETED ✅
+# حل مشكلة k6 http_req_failed (تم الموافقة عليها)
+Status: 🟡 In Progress | 0/15 completed
 
-## Step 1: Analyze existing implementation
-- [x] Reviewed all relevant entities (Checkpoint, Incident, CheckpointStatusHistory)
-- [x] Reviewed controllers (incident.controller.ts, checkpoint.controller.ts) 
-- [x] Reviewed services (incident.service.ts, checkpoint.service.ts)
-- [x] Confirmed auth/roles implementation
-- [x] Verified filtering, pagination, CRUD operations
+## المرحلة 1: Fix k6 Tests (4/4)
+- [ ] 1.1: إنشاء .env مع AUTH_TOKEN
+- [ ] 1.2: إنشاء generate-token.js 
+- [ ] 1.3: إصلاح performance-test.js (POST /report endpoint)
+- [ ] 1.4: تخفيف thresholds مؤقتاً
 
-## Step 2: Verify feature completeness
-- [x] Centralized registry tables + CRUD APIs ✅
-- [x] Checkpoint status history + GET /history endpoint ✅
-- [x] Incidents categorization (type/severity) + filtering ✅
-- [x] Authorized users CRUD/verify/close ✅
-- [x] Full filtering/sorting/pagination support ✅
+## المرحلة 2: Backend Optimizations (7/7)
+- [ ] 2.1: إضافة DB indexes
+- [ ] 2.2: Query optimization (select columns)
+- [ ] 2.3: Redis caching setup
+- [ ] 2.4: Connection pooling
+- [ ] 2.5: Throttler على endpoints
+- [ ] 2.6: BullMQ لـ writes
+- [ ] 2.7: Test DB migrations
 
-## Step 3: Testing & Validation
-- [ ] Run `npm run start:dev`
-- [ ] Test POST /api/v1/checkpoints (admin token)
-- [ ] Test POST /api/v1/incidents (user token)  
-- [ ] Test GET /api/v1/incidents?type=closure&severity=high&page=1&limit=10
-- [ ] Test PATCH /incidents/{id}/verify (moderator token)
-- [ ] Test PATCH /incidents/{id}/close (admin token)
-- [ ] Test GET /checkpoints/{id}/history
+## المرحلة 3: Monitoring (4/4)
+- [ ] 3.1: Prometheus config
+- [ ] 3.2: Grafana dashboard
+- [ ] 3.3: Re-run k6 tests
+- [ ] 3.4: Final performance report
 
-## Next Steps
-- Run server and test all endpoints
-- Task completed - ready for production use
+**Next Step: المرحلة 1.1 → .env creation**
 
