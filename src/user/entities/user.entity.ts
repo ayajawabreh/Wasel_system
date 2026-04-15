@@ -1,21 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
-@Entity('user') // مهم عشان يربط مع الجدول الموجود
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
-  @Column()
-  email: string;
+  @Column({ unique: true })
+  email!: string;
 
   @Column({ name: 'password_hash' })
-  password: string;
+  password_hash!: string;
 
-  role: string;
+  @Column({ default: 'user' })
+  role!: string;
 
-  @Column()
-  created_at: Date;
+  @CreateDateColumn()
+  created_at!: Date;
 }
