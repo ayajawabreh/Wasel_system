@@ -3,24 +3,23 @@ import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   async login(@Body() body: { email: string; password: string }) {
-    const user = await this.authService.validateUser(body.email, body.password);
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    return this.authService.login(user);
+    return this.authService.login(body.email, body.password);
   }
 
   @Post('register')
   async register(
-    @Body() body: { name: string; email: string; password: string; role?: string },
+    @Body()
+    body: { name: string; email: string; password: string; role?: string },
   ) {
-    const role = body.role || 'user';
-    return this.authService.register(body.name, body.email, body.password, role);
+    return this.authService.register(
+      body.name,
+      body.email,
+      body.password,
+      body.role,
+    );
   }
 }

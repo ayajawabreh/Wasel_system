@@ -1,43 +1,57 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Checkpoint } from '../../checkpoint/entities/checkpoint.entity';
 
 @Entity('incident')
 export class Incident {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
+
+  @Column({ nullable: true })
+  checkpoint_id!: number;
 
   @Column()
-  type: string;
-
-  @Column({ nullable: true })
-  severity: string;
-
-  @Column('decimal', { precision: 10, scale: 6, nullable: true })
-  latitude: number;
-
-  @Column('decimal', { precision: 10, scale: 6, nullable: true })
-  longitude: number;
-
-  @Column({ nullable: true })
-  description: string;
+  type!: string;
 
   @Column()
-  status: string;
+  severity!: string;
+
+ @Column({
+  type: 'enum',
+  enum: ['pending', 'resolved'],
+  default: 'pending',
+})
+status!: string;
 
   @Column({ nullable: true })
-  checkpoint_id: number;
+  description!: string;
 
-  @Column({ nullable: true })
-  reported_by: number;
+  @Column('decimal', { precision: 10, scale: 7, nullable: true })
+  latitude!: number;
 
-  @Column({ nullable: true })
-  verified_by: number;
+  @Column('decimal', { precision: 10, scale: 7, nullable: true })
+  longitude!: number;
 
   @Column()
-  region: string;
+  reported_by!: number;
+
+  @Column({ nullable: true })
+  verified_by!: number;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
+
+  @ManyToOne(() => Checkpoint)
+  @JoinColumn({ name: 'checkpoint_id' })
+  checkpoint!: Checkpoint;
 }

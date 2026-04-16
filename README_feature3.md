@@ -1,0 +1,289 @@
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
+
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
+
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Project setup
+
+```bash
+$ npm install
+```
+
+## Compile and run the project
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Run tests
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+## Deployment
+
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+
+```bash
+$ npm install -g @nestjs/mau
+$ mau deploy
+```
+
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+
+## Resources
+
+Check out a few resources that may come in handy when working with NestJS:
+
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+## Feature 1: External API Integration & Performance Optimization
+
+### Overview
+This feature integrates external services to enhance route intelligence and system performance. It focuses on connecting real-world APIs, optimizing response time, and ensuring system reliability under load.
+
+---
+
+### External APIs Integration
+
+The system integrates two main external services:
+
+- **OSRM (Open Source Routing Machine)**
+  - Used for route calculation and distance estimation
+  - Provides base routing between geographic coordinates
+
+- **Open-Meteo API**
+  - Used for retrieving real-time weather data
+  - Enhances route estimation by considering weather conditions
+
+---
+
+### Performance Optimization
+
+Several performance improvements were implemented:
+
+- Caching of external API responses to reduce repeated calls
+- Request timeout handling for external services
+- Graceful degradation when external APIs fail
+- Reduced unnecessary recomputation of routes
+
+---
+
+### Rate Limiting
+
+To protect system stability, rate limiting was implemented using NestJS Throttler:
+
+- Prevents abuse of `/api/v1/routes/estimate`
+- Limits excessive concurrent requests
+- Ensures system stability under load
+
+---
+
+### Performance Testing (k6)
+
+The system was tested using k6 load testing tool with the following scenarios:
+
+- Read-heavy workload (incidents retrieval)
+- Write-heavy workload (reports creation)
+- Mixed workload simulation
+- Spike testing (sudden traffic increase)
+- Soak testing (long duration stability test)
+
+#### Results:
+- System handled concurrent requests successfully
+- No critical failures detected
+- Rate limiting activated under high load (expected behavior)
+
+---
+
+### Outcome
+
+This feature improved system reliability by:
+- Reducing external API dependency risks
+- Improving response time through caching
+- Ensuring stability under heavy load
+
+
+ ## Feature 3: Route Estimation & Mobility Intelligence
+Overview
+
+This feature provides route estimation between two geographic locations and returns estimated distance, estimated duration, and explanatory metadata describing the factors that affected the route calculation. The implementation follows a heuristic-based approach, which is acceptable for this project as exact routing accuracy is not required.
+
+The feature was designed to support real-world mobility conditions in Palestine by incorporating route intelligence from multiple sources, including checkpoints, incidents, weather conditions, and user-defined route constraints such as avoiding checkpoints or avoiding specific areas.
+
+Endpoint
+
+POST /api/v1/routes/estimate
+
+Request Body
+{
+  "startLatitude": 31.95,
+  "startLongitude": 35.93,
+  "endLatitude": 31.98,
+  "endLongitude": 35.96,
+  "avoidCheckpoints": true,
+  "avoidAreas": ["Area A"]
+}
+Request Fields
+startLatitude: starting point latitude
+startLongitude: starting point longitude
+endLatitude: destination latitude
+endLongitude: destination longitude
+avoidCheckpoints: optional boolean flag indicating whether checkpoints should be avoided
+avoidAreas: optional list of area names to avoid during route estimation
+Response Example
+{
+  "estimatedDistance": 8.72,
+  "estimatedDuration": 27.66,
+  "metadata": {
+    "factors": [
+      "Base route estimated using OSRM external routing service",
+      "Weather condition near route: cloudy",
+      "Alternative path applied to avoid area: Area A",
+      "Alternative path used to avoid busy checkpoint: Checkpoint C",
+      "Low severity incident nearby: Theft",
+      "High severity incident nearby: Fire"
+    ],
+    "avoidCheckpoints": true,
+    "avoidAreas": ["Area A"],
+    "routingSource": "OSRM",
+    "weatherSource": "Open-Meteo"
+  }
+}
+Core Logic
+
+The route estimation process starts by requesting a base route from the OSRM routing service. The returned route distance and duration are then adjusted using internal heuristics based on several contextual factors:
+
+current weather conditions
+nearby checkpoints
+active incidents
+avoided areas
+user preference to avoid checkpoints
+
+This allows the system to generate a realistic estimated route while also explaining the reasoning behind the estimate.
+
+External API Integration
+
+This feature integrates with two external APIs as required by the project:
+
+OSRM: used to estimate the base driving route, including raw distance and travel duration
+Open-Meteo: used to retrieve current weather conditions near the route
+Route Constraints Support
+
+The feature supports the following constraints required by the project:
+
+Avoid checkpoints: if enabled, the system applies smaller route penalties to simulate alternative paths around busy or closed checkpoints
+Avoid specific areas: if area names are provided, the system loads matching areas from the database and applies additional duration and distance penalties when the route is affected by those areas
+Database Usage
+
+This feature uses the relational database in multiple ways:
+
+reading checkpoints from the checkpoint table
+reading active incidents from the incident table
+reading avoidable areas from the area table
+
+The area table was introduced to support dynamic area-based route avoidance instead of hardcoded values.
+
+Reliability Enhancements
+
+To improve system reliability and satisfy project requirements for external API integrations, the following mechanisms were added:
+
+Timeout handling: external API requests to OSRM and Open-Meteo use request timeouts
+Graceful error handling: if the weather API fails, route estimation still continues without weather adjustment
+Caching: repeated route estimation requests are cached temporarily to reduce repeated external API calls
+Rate limiting: the route estimation endpoint is protected using throttling to prevent abuse and excessive request bursts
+Validation
+
+Input validation is implemented using DTO validation decorators to ensure that:
+
+latitude values are valid
+longitude values are valid
+avoidCheckpoints is a boolean if provided
+avoidAreas is an array of strings if provided
+Testing
+
+Unit tests were added for the RouteService to validate core route estimation behavior. The tested scenarios include:
+
+returning a cached result when available
+applying avoid-area penalties using database records
+continuing route estimation when the weather API fails
+
+In addition, the endpoint was tested manually using HTTP requests and was also validated using k6-based performance testing.
+
+Performance Testing
+
+A focused k6 test was executed for the route estimation endpoint to verify its runtime behavior. The feature returned successful responses including estimated distance, estimated duration, and explanatory metadata. The test confirmed that the endpoint is operational and performs correctly under low-load validation.
+
+It was also observed that under higher request bursts, throttling protection may reject excess requests, which is expected because rate limiting is intentionally enabled for this endpoint.
+
+Design Rationale
+
+NestJS was used to implement this feature because it offers a modular structure, strong support for dependency injection, clean controller-service separation, and maintainable integration with TypeORM, external HTTP services, caching, and throttling. This supports scalability, maintainability, and development efficiency, which align with the project requirements.
+
+Notes
+Route estimation is heuristic-based and not intended to provide exact turn-by-turn routing accuracy
+Area avoidance is database-driven through the area table
+Cached results help reduce external API usage
+Weather failure does not stop route estimation
+Excessive request rates may trigger throttling responses by design

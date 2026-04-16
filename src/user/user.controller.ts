@@ -6,8 +6,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() body: { name: string; email: string; password: string; role?: string }) {
-    return this.userService.create(body.name, body.email, body.password, body.role);
+  create(
+    @Body()
+    body: { name: string; email: string; password: string; role?: string },
+  ) {
+    return this.userService.create(
+      body.name,
+      body.email,
+      body.password,
+      body.role,
+    );
   }
 
   @Get()
@@ -23,7 +31,13 @@ export class UserController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() body: Partial<{ name: string; email: string; password: string; role: string }>,
+    @Body()
+    body: Partial<{
+      name: string;
+      email: string;
+      password: string;
+      role: string;
+    }>,
   ) {
     return this.userService.update(+id, body);
   }
