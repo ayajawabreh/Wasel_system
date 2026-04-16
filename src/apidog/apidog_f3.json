@@ -1,0 +1,252 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/v1/routes/estimate": {
+      "post": {
+        "summary": "Feature 3 - Route Estimation",
+        "deprecated": false,
+        "description": "This endpoint estimates a route between two geographic locations and returns the estimated distance, estimated duration, and explanatory metadata. The estimation is heuristic-based and considers checkpoints, incidents, weather conditions, avoided areas, and checkpoint avoidance preferences.\nAuthentication: This endpoint does not require authentication.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "startLatitude": {
+                    "type": "number"
+                  },
+                  "startLongitude": {
+                    "type": "number"
+                  },
+                  "endLatitude": {
+                    "type": "number"
+                  },
+                  "endLongitude": {
+                    "type": "number"
+                  },
+                  "avoidCheckpoints": {
+                    "type": "boolean"
+                  },
+                  "avoidAreas": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "startLatitude",
+                  "startLongitude",
+                  "endLatitude",
+                  "endLongitude",
+                  "avoidCheckpoints",
+                  "avoidAreas"
+                ]
+              },
+              "example": {
+                "startLatitude": 31.95,
+                "startLongitude": 35.93,
+                "endLatitude": 31.98,
+                "endLongitude": 35.96,
+                "avoidCheckpoints": true,
+                "avoidAreas": [
+                  "Area A"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "estimatedDistance": {
+                      "type": "number"
+                    },
+                    "estimatedDuration": {
+                      "type": "number"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "factors": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "avoidCheckpoints": {
+                          "type": "boolean"
+                        },
+                        "avoidAreas": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "routingSource": {
+                          "type": "string"
+                        },
+                        "weatherSource": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "factors",
+                        "avoidCheckpoints",
+                        "avoidAreas",
+                        "routingSource",
+                        "weatherSource"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "estimatedDistance",
+                    "estimatedDuration",
+                    "metadata"
+                  ]
+                },
+                "example": {
+                  "estimatedDistance": 8.72,
+                  "estimatedDuration": 27.66,
+                  "metadata": {
+                    "factors": [
+                      "Base route estimated using OSRM external routing service",
+                      "Weather condition near route: cloudy",
+                      "Alternative path applied to avoid area: Area A",
+                      "Alternative path used to avoid busy checkpoint: Checkpoint C",
+                      "Low severity incident nearby: Theft",
+                      "High severity incident nearby: Fire"
+                    ],
+                    "avoidCheckpoints": true,
+                    "avoidAreas": [
+                      "Area A"
+                    ],
+                    "routingSource": "OSRM",
+                    "weatherSource": "Open-Meteo"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "",
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "message",
+                    "error"
+                  ]
+                },
+                "example": {
+                  "statusCode": 400,
+                  "message": [
+                    "Invalid input"
+                  ],
+                  "error": "Bad Request"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "",
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "statusCode": 429,
+                  "message": "Too Many Requests"
+                }
+              }
+            },
+            "headers": {}
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "",
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "statusCode": 503,
+                  "message": "Routing service unavailable"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

@@ -2,14 +2,10 @@ import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { RouteService } from './route.service';
 import { EstimateRouteDto } from './dto/estimate-route.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { UseGuards } from '@nestjs/common';
 
 @Controller('api/v1/routes')
 export class RouteController {
   constructor(private readonly routeService: RouteService) {}
-
-  @UseGuards(JwtAuthGuard)
 
   @Post('estimate')
   @HttpCode(HttpStatus.OK)

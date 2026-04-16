@@ -96,3 +96,127 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+ ## Feature 3: Route Estimation & Mobility Intelligence
+Overview
+
+This feature provides route estimation between two geographic locations and returns estimated distance, estimated duration, and explanatory metadata describing the factors that affected the route calculation. The implementation follows a heuristic-based approach, which is acceptable for this project as exact routing accuracy is not required.
+
+The feature was designed to support real-world mobility conditions in Palestine by incorporating route intelligence from multiple sources, including checkpoints, incidents, weather conditions, and user-defined route constraints such as avoiding checkpoints or avoiding specific areas.
+
+Endpoint
+
+POST /api/v1/routes/estimate
+
+Request Body
+{
+  "startLatitude": 31.95,
+  "startLongitude": 35.93,
+  "endLatitude": 31.98,
+  "endLongitude": 35.96,
+  "avoidCheckpoints": true,
+  "avoidAreas": ["Area A"]
+}
+Request Fields
+startLatitude: starting point latitude
+startLongitude: starting point longitude
+endLatitude: destination latitude
+endLongitude: destination longitude
+avoidCheckpoints: optional boolean flag indicating whether checkpoints should be avoided
+avoidAreas: optional list of area names to avoid during route estimation
+Response Example
+{
+  "estimatedDistance": 8.72,
+  "estimatedDuration": 27.66,
+  "metadata": {
+    "factors": [
+      "Base route estimated using OSRM external routing service",
+      "Weather condition near route: cloudy",
+      "Alternative path applied to avoid area: Area A",
+      "Alternative path used to avoid busy checkpoint: Checkpoint C",
+      "Low severity incident nearby: Theft",
+      "High severity incident nearby: Fire"
+    ],
+    "avoidCheckpoints": true,
+    "avoidAreas": ["Area A"],
+    "routingSource": "OSRM",
+    "weatherSource": "Open-Meteo"
+  }
+}
+Core Logic
+
+The route estimation process starts by requesting a base route from the OSRM routing service. The returned route distance and duration are then adjusted using internal heuristics based on several contextual factors:
+
+current weather conditions
+nearby checkpoints
+active incidents
+avoided areas
+user preference to avoid checkpoints
+
+This allows the system to generate a realistic estimated route while also explaining the reasoning behind the estimate.
+
+External API Integration
+
+This feature integrates with two external APIs as required by the project:
+
+OSRM: used to estimate the base driving route, including raw distance and travel duration
+Open-Meteo: used to retrieve current weather conditions near the route
+Route Constraints Support
+
+The feature supports the following constraints required by the project:
+
+Avoid checkpoints: if enabled, the system applies smaller route penalties to simulate alternative paths around busy or closed checkpoints
+Avoid specific areas: if area names are provided, the system loads matching areas from the database and applies additional duration and distance penalties when the route is affected by those areas
+Database Usage
+
+This feature uses the relational database in multiple ways:
+
+reading checkpoints from the checkpoint table
+reading active incidents from the incident table
+reading avoidable areas from the area table
+
+The area table was introduced to support dynamic area-based route avoidance instead of hardcoded values.
+
+Reliability Enhancements
+
+To improve system reliability and satisfy project requirements for external API integrations, the following mechanisms were added:
+
+Timeout handling: external API requests to OSRM and Open-Meteo use request timeouts
+Graceful error handling: if the weather API fails, route estimation still continues without weather adjustment
+Caching: repeated route estimation requests are cached temporarily to reduce repeated external API calls
+Rate limiting: the route estimation endpoint is protected using throttling to prevent abuse and excessive request bursts
+Validation
+
+Input validation is implemented using DTO validation decorators to ensure that:
+
+latitude values are valid
+longitude values are valid
+avoidCheckpoints is a boolean if provided
+avoidAreas is an array of strings if provided
+Testing
+
+Unit tests were added for the RouteService to validate core route estimation behavior. The tested scenarios include:
+
+returning a cached result when available
+applying avoid-area penalties using database records
+continuing route estimation when the weather API fails
+
+In addition, the endpoint was tested manually using HTTP requests and was also validated using k6-based performance testing.
+
+Performance Testing
+
+A focused k6 test was executed for the route estimation endpoint to verify its runtime behavior. The feature returned successful responses including estimated distance, estimated duration, and explanatory metadata. The test confirmed that the endpoint is operational and performs correctly under low-load validation.
+
+It was also observed that under higher request bursts, throttling protection may reject excess requests, which is expected because rate limiting is intentionally enabled for this endpoint.
+
+Design Rationale
+
+NestJS was used to implement this feature because it offers a modular structure, strong support for dependency injection, clean controller-service separation, and maintainable integration with TypeORM, external HTTP services, caching, and throttling. This supports scalability, maintainability, and development efficiency, which align with the project requirements.
+
+Notes
+Route estimation is heuristic-based and not intended to provide exact turn-by-turn routing accuracy
+Area avoidance is database-driven through the area table
+Cached results help reduce external API usage
+Weather failure does not stop route estimation
+Excessive request rates may trigger throttling responses by design
