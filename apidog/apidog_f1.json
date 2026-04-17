@@ -1,0 +1,1040 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/baseUrl/api/v1/checkpoints": {
+      "post": {
+        "summary": "CheckPoints",
+        "deprecated": false,
+        "description": "This request is used to create a new checkpoint in the system. It sends valid checkpoint data including name, latitude, longitude, and current status, and returns the newly created checkpoint with its assigned ID and timestamps upon successful creation.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "Checkpoint F",
+                "latitude": 31.95,
+                "longitude": 35.93,
+                "current_status": "open"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "current_status": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "name"
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "ID"
+                    }
+                  },
+                  "description": "List of checkpoints with pagination\n",
+                  "required": [
+                    "data",
+                    "id",
+                    "name",
+                    "latitude",
+                    "longitude",
+                    "current_status",
+                    "created_at",
+                    "updated_at"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Checkpoint A",
+                      "latitude": "31.950000",
+                      "longitude": "35.933300",
+                      "current_status": "open",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Checkpoint B",
+                      "latitude": "32.000000",
+                      "longitude": "35.950000",
+                      "current_status": "closed",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 3,
+                      "name": "Checkpoint C",
+                      "latitude": "31.980000",
+                      "longitude": "35.940000",
+                      "current_status": "busy",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 4,
+                      "name": "Checkpoint D",
+                      "latitude": "31.970000",
+                      "longitude": "35.960000",
+                      "current_status": "open",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 5,
+                      "name": "Checkpoint E",
+                      "latitude": "31.960000",
+                      "longitude": "35.970000",
+                      "current_status": "closed",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    }
+                  ],
+                  "total": 5,
+                  "page": 1,
+                  "limit": 10
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Validation",
+            "description": "This request tests the validation rules when creating a checkpoint. It ensures that the API correctly rejects invalid or missing data (such as empty name, invalid latitude/longitude, or incorrect status) and returns a 400 Bad Request response with appropriate error messages."
+          },
+          "401": {
+            "$ref": "#/components/responses/401 Unauthorized",
+            "description": "\nThis request tests the authentication mechanism when creating a checkpoint. It verifies that the API correctly blocks access when no valid authentication token is provided, and returns a 401 Unauthorized response indicating that the user must be logged in to perform this action."
+          },
+          "403": {
+            "$ref": "#/components/responses/403 Forbidden",
+            "description": "This request tests role-based access control by attempting to create a checkpoint using a valid authenticated user who does not have admin privileges. The API should return a 403 Forbidden response."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "get checkpoints",
+        "deprecated": false,
+        "description": "Retrieve a paginated list of checkpoints.\nThis endpoint returns all checkpoints with optional filtering by status and supports pagination using page and limit query parameters.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "latitude": {
+                            "type": "string"
+                          },
+                          "longitude": {
+                            "type": "string"
+                          },
+                          "current_status": {
+                            "type": "string",
+                            "enum": [
+                              "open ",
+                              "closed ",
+                              "busy"
+                            ]
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "latitude",
+                          "longitude",
+                          "current_status",
+                          "created_at",
+                          "updated_at"
+                        ]
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "total",
+                    "page",
+                    "limit"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Checkpoint A",
+                      "latitude": "31.950000",
+                      "longitude": "35.933300",
+                      "current_status": "open",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Checkpoint B",
+                      "latitude": "32.000000",
+                      "longitude": "35.950000",
+                      "current_status": "closed",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 3,
+                      "name": "Checkpoint C",
+                      "latitude": "31.980000",
+                      "longitude": "35.940000",
+                      "current_status": "busy",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 4,
+                      "name": "Checkpoint D",
+                      "latitude": "31.970000",
+                      "longitude": "35.960000",
+                      "current_status": "open",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 5,
+                      "name": "Checkpoint E",
+                      "latitude": "31.960000",
+                      "longitude": "35.970000",
+                      "current_status": "closed",
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z"
+                    },
+                    {
+                      "id": 6,
+                      "name": "Checkpoint F",
+                      "latitude": "31.950000",
+                      "longitude": "35.930000",
+                      "current_status": "open",
+                      "created_at": "2026-04-13T08:25:10.000Z",
+                      "updated_at": "2026-04-13T08:25:10.000Z"
+                    },
+                    {
+                      "id": 7,
+                      "name": "Checkpoint F",
+                      "latitude": "31.950000",
+                      "longitude": "35.930000",
+                      "current_status": "open",
+                      "created_at": "2026-04-13T08:25:16.000Z",
+                      "updated_at": "2026-04-13T08:25:16.000Z"
+                    },
+                    {
+                      "id": 8,
+                      "name": "Checkpoint F",
+                      "latitude": "31.950000",
+                      "longitude": "35.930000",
+                      "current_status": "open",
+                      "created_at": "2026-04-13T08:31:14.000Z",
+                      "updated_at": "2026-04-13T08:31:14.000Z"
+                    }
+                  ],
+                  "total": 8,
+                  "page": 1,
+                  "limit": 10
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/baseUrl/api/v1/checkpoints/1": {
+      "patch": {
+        "summary": "UPDATE Checkpoint",
+        "deprecated": false,
+        "description": "This endpoint uses PATCH to allow partial updates. Only the provided fields will be updated.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "Updated Checkpoint A",
+                "latitude": 31.99,
+                "longitude": 35.91,
+                "current_status": "busy"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "string"
+                    },
+                    "current_status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "latitude",
+                    "longitude",
+                    "current_status",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "$ref": "#/components/responses/400 Validation",
+            "description": "This request tests the validation rules when creating a checkpoint. It ensures that the API correctly rejects invalid or missing data (such as empty name, invalid latitude/longitude, or incorrect status) and returns a 400 Bad Request response with appropriate error messages."
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/baseUrl/api/v1/incidents": {
+      "get": {
+        "summary": "incidents",
+        "deprecated": false,
+        "description": "This endpoint returns a paginated list of incidents, including their details such as type, severity, status, location, and related checkpoint information.",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "Bearer {{token}}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "checkpoint_id": 1,
+                      "type": "Theft",
+                      "severity": "low",
+                      "status": "pending",
+                      "description": "Minor theft",
+                      "latitude": "31.955000",
+                      "longitude": "35.935000",
+                      "reported_by": 2,
+                      "verified_by": null,
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z",
+                      "checkpoint": {
+                        "id": 1,
+                        "name": "Checkpoint A",
+                        "latitude": "31.950000",
+                        "longitude": "35.933300",
+                        "current_status": "open",
+                        "created_at": "2026-03-29T20:38:46.000Z",
+                        "updated_at": "2026-03-29T20:38:46.000Z"
+                      }
+                    },
+                    {
+                      "id": 2,
+                      "checkpoint_id": 2,
+                      "type": "Accident",
+                      "severity": "high",
+                      "status": "pending",
+                      "description": "Car accident",
+                      "latitude": "32.005000",
+                      "longitude": "35.951000",
+                      "reported_by": 3,
+                      "verified_by": null,
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z",
+                      "checkpoint": {
+                        "id": 2,
+                        "name": "Checkpoint B",
+                        "latitude": "32.000000",
+                        "longitude": "35.950000",
+                        "current_status": "closed",
+                        "created_at": "2026-03-29T20:38:46.000Z",
+                        "updated_at": "2026-03-29T20:38:46.000Z"
+                      }
+                    },
+                    {
+                      "id": 3,
+                      "checkpoint_id": 3,
+                      "type": "Traffic Jam",
+                      "severity": "medium",
+                      "status": "pending",
+                      "description": "Heavy traffic",
+                      "latitude": "31.981000",
+                      "longitude": "35.942000",
+                      "reported_by": 4,
+                      "verified_by": null,
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z",
+                      "checkpoint": {
+                        "id": 3,
+                        "name": "Checkpoint C",
+                        "latitude": "31.980000",
+                        "longitude": "35.940000",
+                        "current_status": "busy",
+                        "created_at": "2026-03-29T20:38:46.000Z",
+                        "updated_at": "2026-03-29T20:38:46.000Z"
+                      }
+                    },
+                    {
+                      "id": 4,
+                      "checkpoint_id": 4,
+                      "type": "Fire",
+                      "severity": "high",
+                      "status": "pending",
+                      "description": "Small fire",
+                      "latitude": "31.972000",
+                      "longitude": "35.962000",
+                      "reported_by": 5,
+                      "verified_by": null,
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z",
+                      "checkpoint": {
+                        "id": 4,
+                        "name": "Checkpoint D",
+                        "latitude": "31.970000",
+                        "longitude": "35.960000",
+                        "current_status": "open",
+                        "created_at": "2026-03-29T20:38:46.000Z",
+                        "updated_at": "2026-03-29T20:38:46.000Z"
+                      }
+                    },
+                    {
+                      "id": 5,
+                      "checkpoint_id": 5,
+                      "type": "Protest",
+                      "severity": "medium",
+                      "status": "pending",
+                      "description": "Local protest",
+                      "latitude": "31.962500",
+                      "longitude": "35.972500",
+                      "reported_by": 2,
+                      "verified_by": null,
+                      "created_at": "2026-03-29T20:38:46.000Z",
+                      "updated_at": "2026-03-29T20:38:46.000Z",
+                      "checkpoint": {
+                        "id": 5,
+                        "name": "Checkpoint E",
+                        "latitude": "31.960000",
+                        "longitude": "35.970000",
+                        "current_status": "closed",
+                        "created_at": "2026-03-29T20:38:46.000Z",
+                        "updated_at": "2026-03-29T20:38:46.000Z"
+                      }
+                    }
+                  ],
+                  "total": 5,
+                  "page": 1,
+                  "limit": 10
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "create incidents",
+        "deprecated": false,
+        "description": "Create Incident - Valid Request\nUsed to create a new incident with correct data.\nRequires user authentication token.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "type": "hazard",
+                "severity": "medium",
+                "latitude": 31.96,
+                "longitude": 35.94,
+                "description": "Test incident",
+                "checkpoint_id": 2
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "message"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "Created",
+                    "value": {
+                      "id": 6,
+                      "checkpoint_id": 2,
+                      "type": "Suspicious Activity",
+                      "severity": "medium",
+                      "status": "pending",
+                      "description": "Test incident",
+                      "latitude": 31.96,
+                      "longitude": 35.94,
+                      "reported_by": 6,
+                      "verified_by": null,
+                      "created_at": "2026-04-12T10:57:57.000Z",
+                      "updated_at": "2026-04-12T10:57:57.000Z"
+                    }
+                  },
+                  "2": {
+                    "summary": "Example 2",
+                    "value": {
+                      "id": 10,
+                      "checkpoint_id": 2,
+                      "type": "hazard",
+                      "severity": "medium",
+                      "status": "pending",
+                      "description": "Test incident",
+                      "latitude": 31.96,
+                      "longitude": 35.94,
+                      "reported_by": 9,
+                      "verified_by": null,
+                      "created_at": "2026-04-13T07:16:00.000Z",
+                      "updated_at": "2026-04-13T07:16:00.000Z"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/baseUrl/api/v1/incidents/1": {
+      "patch": {
+        "summary": "Verify Incident (Role Test)",
+        "deprecated": false,
+        "description": "This request is used to demonstrate role-based access control in the system. It verifies that only users with the Admin role are allowed to update or verify an incident status, while unauthorized users are correctly restricted from performing this action and receive a 403 Forbidden response.",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "status": "pending"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Forbidden resource",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "500 Internal Server Error",
+        "deprecated": false,
+        "description": "This response indicates that an unexpected error occurred on the server while processing the request. It is used to represent internal server failures that are not caused by the client request.",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "statusCode": 500,
+                  "message": "Internal Server Error"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/baseUrl/api/v1/incidents/8": {
+      "patch": {
+        "summary": "update incident",
+        "deprecated": false,
+        "description": "This request is used to update the incident status using a valid and accepted value. It tests the successful handling of status changes when correct data is provided according to the API validation rules.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "status": "pending"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "id": 8,
+                  "checkpoint_id": null,
+                  "type": "wrong",
+                  "severity": "low",
+                  "status": "pending",
+                  "description": "test update",
+                  "latitude": "1000.000000",
+                  "longitude": null,
+                  "reported_by": 6,
+                  "verified_by": null,
+                  "created_at": "2026-04-12T21:43:20.000Z",
+                  "updated_at": "2026-04-12T22:24:56.000Z",
+                  "checkpoint": null
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/baseUrl/api/v1/checkpoints/9999": {
+      "get": {
+        "summary": "404 Not Found",
+        "deprecated": false,
+        "description": "This request tests the system’s behavior when trying to access or modify a resource that does not exist. It verifies that the API correctly returns a 404 Not Found response when the requested incident or checkpoint ID is invalid or not available in the database.",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Checkpoint not found",
+                  "error": "Not Found",
+                  "statusCode": 404
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login",
+        "deprecated": false,
+        "description": "This endpoint authenticates a user using email and password and returns a JWT access token upon successful login.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "email": "admain@example.com",
+                "password": "123"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoibm9vckBleGFtcGxlLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc3NTk5MDM0OCwiZXhwIjoxNzc1OTkxMjQ4fQ.qt11nYqzyF0ihAEcHjxub6ajc-bZV6kPxCteSpjWMxM"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register",
+        "deprecated": false,
+        "description": "This endpoint registers a new user in the system and returns the created user details upon successful registration.",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "Admain",
+                "email": "admain@example.com",
+                "password": "123",
+                "role": "admin"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "id": 11,
+                  "name": "Admain",
+                  "email": "admain@example.com",
+                  "password_hash": "$2b$10$pNMaVA6iMApFVbCqgpOB..NwL2Qif0qXNXOjWUj9nuwu4MglHe2vy",
+                  "role": "admin",
+                  "created_at": "2026-04-16T10:52:12.000Z"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {
+      "400 Validation": {
+        "description": "This request tests the validation rules when creating a checkpoint. It ensures that the API correctly rejects invalid or missing data (such as empty name, invalid latitude/longitude, or incorrect status) and returns a 400 Bad Request response with appropriate error messages.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {}
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "message": [
+                    "longitude must be a number conforming to the specified constraints"
+                  ],
+                  "error": "Bad Request",
+                  "statusCode": 400
+                }
+              }
+            }
+          }
+        }
+      },
+      "401 Unauthorized": {
+        "description": "\nThis request tests the authentication mechanism when creating a checkpoint. It verifies that the API correctly blocks access when no valid authentication token is provided, and returns a 401 Unauthorized response indicating that the user must be logged in to perform this action.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {}
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "message": "Unauthorized",
+                  "statusCode": 401
+                }
+              }
+            }
+          }
+        }
+      },
+      "403 Forbidden": {
+        "description": "This request tests role-based access control by attempting to create a checkpoint using a valid authenticated user who does not have admin privileges. The API should return a 403 Forbidden response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {}
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "message": "Forbidden resource",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Local"
+    }
+  ],
+  "security": []
+}

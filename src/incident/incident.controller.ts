@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 
-@Controller('api/v1/incidents')
+@Controller('incidents')
 export class IncidentController {
   constructor(private readonly incidentService: IncidentService) {}
 

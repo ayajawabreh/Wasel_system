@@ -97,7 +97,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
-<<<<<<< HEAD
 ## Feature 4: Alerts & Regional Notifications
 
 Overview
@@ -220,7 +219,6 @@ Notes
 alerts are generated only after incident verification
 subscriptions control which users receive alerts
 the feature is ready for future integration with external notification services
-=======
 
  ## Feature 3: Route Estimation & Mobility Intelligence
 Overview
@@ -344,4 +342,3 @@ Area avoidance is database-driven through the area table
 Cached results help reduce external API usage
 Weather failure does not stop route estimation
 Excessive request rates may trigger throttling responses by design
->>>>>>> aya2

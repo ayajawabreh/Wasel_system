@@ -3,14 +3,14 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('reportvote')
 export class ReportVote {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  user_id: number;
+  user_id!: number;
 
   @Column()
-  report_id: number;
+  report_id!: number;
 
   @Column()
-  vote_type: string; // 'up' or 'down'
+  vote_type!: string; // 'up' or 'down'
 }

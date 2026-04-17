@@ -1,72 +1,72 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-<<<<<<< HEAD
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ReportModule } from './report/report.module';
 import { ReportVoteModule } from './reportVote/report-vote.module';
-import { AlertSubscriptionModule } from './alert-subscription/alert-subscription.module';
-import { AlertModule } from './alert/alert.module';
+import { CheckpointModule } from './checkpoint/checkpoint.module';
 import { IncidentModule } from './incident/incident.module';
+import { RouteModule } from './route/route.module';
+
+// 🔔 Alerts modules (new)
+import { AlertModule } from './alert/alert.module';
+import { AlertSubscriptionModule } from './alert-subscription/alert-subscription.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'advance_soft',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+    // 🌱 Config Module
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
     }),
 
+    // 🗄️ Database (Async Config)
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: parseInt(configService.get('DB_PORT') ?? '3306'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        autoLoadEntities: true,
+        synchronize: false,
+      }),
+    }),
+
+    // 🚦 Rate Limiting (Throttler)
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60_000,
+        limit: 500,
+      },
+    ]),
+
+    // 📦 Feature Modules
     UserModule,
     AuthModule,
     ReportModule,
     ReportVoteModule,
-    AlertSubscriptionModule,
-    AlertModule,
+    CheckpointModule,
     IncidentModule,
-  ],
-})
-export class AppModule {}
-=======
-import { HttpModule } from '@nestjs/axios';
-import { CacheModule } from '@nestjs/cache-manager';
-import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { RouteController } from './route.controller';
-import { RouteService } from './route.service';
-import { Checkpoint } from '../checkpoint/entities/checkpoint.entity';
-import { Incident } from '../incident/entities/incident.entity';
-import { Area } from '../area/entities/area.entity';
+    RouteModule,
 
-@Module({
-  imports: [
-    TypeOrmModule.forFeature([Checkpoint, Incident, Area]),
-    HttpModule,
-    CacheModule.register({
-      ttl: 15 * 60 * 1000,
-      max: 100,
-      isGlobal: false,
-    }),
-    ThrottlerModule.forRoot([
-      {
-        ttl: 60_000,
-        limit: 10,
-      },
-    ]),
+    // 🔔 Alerts (new)
+    AlertModule,
+    AlertSubscriptionModule,
   ],
-  controllers: [RouteController],
+
   providers: [
-    RouteService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
   ],
 })
-export class RouteModule {}
->>>>>>> aya2
+export class AppModule {}

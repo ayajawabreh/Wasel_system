@@ -68,11 +68,12 @@ export class UserService {
   }
 
   async findByEmail(email: string) {
-    return this.userRepository.findOne({
-      where: { email },
-      select: ['id', 'email', 'role', 'password_hash'],
-    });
-  }
+  return this.userRepository
+    .createQueryBuilder('user')
+    .addSelect('user.password_hash')
+    .where('user.email = :email', { email })
+    .getOne();
+}
 
   async remove(id: number) {
     const result = await this.userRepository.delete(id);

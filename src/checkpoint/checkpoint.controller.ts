@@ -5,7 +5,7 @@ import { UpdateCheckpointDto } from './dto/update-checkpoint.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
-@Controller('api/v1/checkpoints')
+@Controller('checkpoints')
 export class CheckpointController {
   constructor(private readonly checkpointService: CheckpointService) {}
 

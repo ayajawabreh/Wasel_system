@@ -16,10 +16,8 @@ export class IncidentService {
     const incident = this.incidentRepository.create({
       ...dto,
       reported_by: userId,
-      status: 'pending',
     });
-
-    return await this.incidentRepository.save(incident);
+    return this.incidentRepository.save(incident);
   }
 
   async findAll(
@@ -29,71 +27,52 @@ export class IncidentService {
     page = 1,
     limit = 10,
   ) {
-    const query = this.incidentRepository
-      .createQueryBuilder('incident')
-      .leftJoinAndSelect('incident.checkpoint', 'checkpoint');
+    const query = this.incidentRepository.createQueryBuilder('incident');
 
     if (type) query.andWhere('incident.type = :type', { type });
     if (severity) query.andWhere('incident.severity = :severity', { severity });
     if (status) query.andWhere('incident.status = :status', { status });
 
-    query
-      .orderBy('incident.created_at', 'DESC')
-      .skip((page - 1) * limit)
-      .take(limit);
+    query.skip((page - 1) * limit).take(limit);
 
     const [data, total] = await query.getManyAndCount();
-
     return { data, total, page, limit };
   }
 
   async findOne(id: number) {
-    const incident = await this.incidentRepository.findOne({
-      where: { id },
-      relations: ['checkpoint'],
-    });
-
-    if (!incident) {
-      throw new NotFoundException('Incident not found');
-    }
-
+    const incident = await this.incidentRepository.findOne({ where: { id } });
+    if (!incident) throw new NotFoundException(`Incident #${id} not found`);
     return incident;
   }
 
-  // 🚀 FIXED UPDATE (IMPORTANT)
   async update(id: number, dto: UpdateIncidentDto) {
-    const incident = await this.findOne(id);
-
-    // safer + cleaner + no silent bugs
-    Object.assign(incident, dto);
-
-    return await this.incidentRepository.save(incident);
+    await this.findOne(id);
+    await this.incidentRepository.update(id, dto);
+    return this.findOne(id);
   }
 
   async verify(id: number, userId: number) {
-    const incident = await this.findOne(id);
-
-    incident.status = 'resolved';
-    incident.verified_by = userId;
-
-    return await this.incidentRepository.save(incident);
+    await this.findOne(id);
+    await this.incidentRepository.update(id, { verified_by: userId });
+    return this.findOne(id);
   }
 
   async close(id: number) {
-    const incident = await this.findOne(id);
-
-    incident.status = 'resolved';
-
-    return await this.incidentRepository.save(incident);
+    await this.findOne(id);
+    await this.incidentRepository.update(id, { status: 'resolved' });
+    return this.findOne(id);
   }
 
   async remove(id: number) {
-    const result = await this.incidentRepository.delete(id);
+    await this.findOne(id);
 
-    if (result.affected === 0) {
-      throw new NotFoundException('Incident not found');
-    }
+    // ✅ حذف الـ alerts المرتبطة أولاً قبل حذف الـ incident
+    await this.incidentRepository.query(
+      `DELETE FROM alert WHERE incident_id = ?`,
+      [id],
+    );
 
-    return { deleted: true };
+    await this.incidentRepository.delete(id);
+    return { message: `Incident #${id} deleted successfully` };
   }
 }

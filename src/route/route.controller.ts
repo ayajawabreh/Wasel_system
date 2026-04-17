@@ -3,7 +3,7 @@ import { Throttle } from '@nestjs/throttler';
 import { RouteService } from './route.service';
 import { EstimateRouteDto } from './dto/estimate-route.dto';
 
-@Controller('api/v1/routes')
+@Controller('routes')  
 export class RouteController {
   constructor(private readonly routeService: RouteService) {}
 

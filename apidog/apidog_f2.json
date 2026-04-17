@@ -1,0 +1,537 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/report": {
+      "get": {
+        "summary": "1) GET all reports",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "user_id": 2,
+                    "description": "Broken street light",
+                    "category": "Infrastructure",
+                    "latitude": "31.950500",
+                    "longitude": "35.933500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 2,
+                    "user_id": 3,
+                    "description": "Flooded road",
+                    "category": "Weather",
+                    "latitude": "32.001000",
+                    "longitude": "35.951500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 3,
+                    "user_id": 4,
+                    "description": "Power outage",
+                    "category": "Infrastructure",
+                    "latitude": "31.981500",
+                    "longitude": "35.942500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 4,
+                    "user_id": 5,
+                    "description": "Suspicious person",
+                    "category": "Security",
+                    "latitude": "31.972500",
+                    "longitude": "35.962500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 5,
+                    "user_id": 2,
+                    "description": "Noise complaint",
+                    "category": "Community",
+                    "latitude": "31.963000",
+                    "longitude": "35.973000",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 7,
+                    "user_id": 3,
+                    "description": "Traffic accident near checkpoint",
+                    "category": "ACCIDENT",
+                    "latitude": "31.950000",
+                    "longitude": "35.210000",
+                    "timestamp": "2026-04-17T13:48:12.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 8,
+                    "user_id": 3,
+                    "description": "Traffic near checkpoint",
+                    "category": "ACCIDENT",
+                    "latitude": "31.950000",
+                    "longitude": "35.210000",
+                    "timestamp": "2026-04-17T13:53:56.000Z",
+                    "status": "pending"
+                  }
+                ]
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "3) CREATE report",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "user_id": 3,
+                "description": "There is a car accident",
+                "category": "ACCIDENT",
+                "latitude": 31.9,
+                "longitude": 35.2,
+                "status": "pending"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "user_id": 3,
+                  "description": "There is a car accident",
+                  "category": "ACCIDENT",
+                  "latitude": 31.9,
+                  "longitude": 35.2,
+                  "status": "pending",
+                  "id": 9
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/report/{id}": {
+      "get": {
+        "summary": "2) GET report by id",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "user_id": 2,
+                    "description": "Broken street light",
+                    "category": "Infrastructure",
+                    "latitude": "31.950500",
+                    "longitude": "35.933500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 2,
+                    "user_id": 3,
+                    "description": "Flooded road",
+                    "category": "Weather",
+                    "latitude": "32.001000",
+                    "longitude": "35.951500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 3,
+                    "user_id": 4,
+                    "description": "Power outage",
+                    "category": "Infrastructure",
+                    "latitude": "31.981500",
+                    "longitude": "35.942500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 4,
+                    "user_id": 5,
+                    "description": "Suspicious person",
+                    "category": "Security",
+                    "latitude": "31.972500",
+                    "longitude": "35.962500",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 5,
+                    "user_id": 2,
+                    "description": "Noise complaint",
+                    "category": "Community",
+                    "latitude": "31.963000",
+                    "longitude": "35.973000",
+                    "timestamp": "2026-03-29T20:38:46.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 7,
+                    "user_id": 3,
+                    "description": "Traffic accident near checkpoint",
+                    "category": "ACCIDENT",
+                    "latitude": "31.950000",
+                    "longitude": "35.210000",
+                    "timestamp": "2026-04-17T13:48:12.000Z",
+                    "status": "pending"
+                  },
+                  {
+                    "id": 8,
+                    "user_id": 3,
+                    "description": "Traffic near checkpoint",
+                    "category": "ACCIDENT",
+                    "latitude": "31.950000",
+                    "longitude": "35.210000",
+                    "timestamp": "2026-04-17T13:53:56.000Z",
+                    "status": "pending"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/report/1/status": {
+      "patch": {
+        "summary": "4) UPDATE status",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "status": "verified"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "user_id",
+                    "description",
+                    "category",
+                    "latitude",
+                    "longitude",
+                    "timestamp",
+                    "status"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/report/1/approve": {
+      "post": {
+        "summary": "5) APPROVE report",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "Report approved and logged"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/report/1": {
+      "delete": {
+        "summary": "6) DELETE report",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/report/1/score": {
+      "get": {
+        "summary": "7) GET score",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reportId": {
+                      "type": "integer"
+                    },
+                    "score": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "reportId",
+                    "score"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/report-vote": {
+      "post": {
+        "summary": "8) CREATE vote",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "user_id": 3,
+                "report_id": 8,
+                "vote_type": "upvote"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "message": "User already voted on this report",
+                  "existingVote": {
+                    "id": 7,
+                    "user_id": 3,
+                    "report_id": 8,
+                    "vote_type": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "9) GET all votes",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": [
+                  {
+                    "id": 3,
+                    "user_id": 2,
+                    "report_id": 2,
+                    "vote_type": "upvote"
+                  },
+                  {
+                    "id": 4,
+                    "user_id": 5,
+                    "report_id": 3,
+                    "vote_type": "upvote"
+                  },
+                  {
+                    "id": 5,
+                    "user_id": 3,
+                    "report_id": 4,
+                    "vote_type": "downvote"
+                  },
+                  {
+                    "id": 6,
+                    "user_id": 3,
+                    "report_id": 7,
+                    "vote_type": "upvote"
+                  },
+                  {
+                    "id": 7,
+                    "user_id": 3,
+                    "report_id": 8,
+                    "vote_type": ""
+                  },
+                  {
+                    "id": 8,
+                    "user_id": 4,
+                    "report_id": 8,
+                    "vote_type": "upvote"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}

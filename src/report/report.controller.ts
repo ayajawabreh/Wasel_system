@@ -27,8 +27,11 @@ getScore(@Param('id') id: string) {
   
 }
 @Patch(':id/status')
-updateStatus(@Param('id') id: string, @Body() body: any) {
-  return this.reportService.updateStatus(+id, body.status);
+updateStatus(
+  @Param('id') id: string,
+  @Body('status') status: string,
+) {
+  return this.reportService.updateStatus(+id, status);
 }
 @Post(':id/approve')
 approve(@Param('id') id: string) {
