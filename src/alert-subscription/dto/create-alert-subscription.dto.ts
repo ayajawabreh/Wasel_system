@@ -1,4 +1,11 @@
+import { IsString, IsNotEmpty } from 'class-validator';
+
 export class CreateAlertSubscriptionDto {
-  region: string;
-  category: string;
+  @IsString()
+  @IsNotEmpty()
+  region!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  category!: string;
 }

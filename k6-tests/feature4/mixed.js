@@ -2,12 +2,12 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 export const options = {
-  vus: 15,
-  duration: '30s',
+  vus: 1,
+  duration: '10s',
 };
 
-const BASE_URL = 'http://localhost:3000';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hZGlhX3Rlc3RAZXhhbXBsZS5jb20iLCJzdWIiOjksInJvbGUiOiIiLCJpYXQiOjE3NzYxMTcyMDcsImV4cCI6MTc3NjEyMDgwN30.ITIJQTPfiJ1hL0ZGev_kzjKRXONpZoJC09UFCVVn1Sc';
+const BASE_URL = 'http://localhost:3000/api/v1';
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoibmFkaWFfdGVzdEBleGFtcGxlLmNvbSIsInJvbGUiOiIiLCJpYXQiOjE3NzY0NjQ4MjMsImV4cCI6MTc3NjQ2ODQyM30.BdqvGsGRRzJlYrdml9fdNi-jWXUl4Mx6vIX77qxG_0U';
 
 const params = {
   headers: {
@@ -17,9 +17,9 @@ const params = {
 };
 
 export default function () {
-  const res1 = http.get(`${BASE_URL}/incident`, params);
+  const res1 = http.get(`${BASE_URL}/incidents`, params);
   check(res1, {
-    'GET /incident status 200': (r) => r.status === 200,
+    'GET /incidents status 200': (r) => r.status === 200,
   });
 
   const uniqueId = `${__VU}-${__ITER}`;

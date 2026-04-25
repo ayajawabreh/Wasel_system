@@ -12,19 +12,16 @@ import { CheckpointModule } from './checkpoint/checkpoint.module';
 import { IncidentModule } from './incident/incident.module';
 import { RouteModule } from './route/route.module';
 
-// 🔔 Alerts modules (new)
 import { AlertModule } from './alert/alert.module';
 import { AlertSubscriptionModule } from './alert-subscription/alert-subscription.module';
 
 @Module({
   imports: [
-    // 🌱 Config Module
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
 
-    // 🗄️ Database (Async Config)
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -40,15 +37,14 @@ import { AlertSubscriptionModule } from './alert-subscription/alert-subscription
       }),
     }),
 
-    // 🚦 Rate Limiting (Throttler)
+    
     ThrottlerModule.forRoot([
       {
-        ttl: 60_000,
-        limit: 500,
+        ttl: 60_000, 
+        limit: 5000,  
       },
     ]),
 
-    // 📦 Feature Modules
     UserModule,
     AuthModule,
     ReportModule,
@@ -57,12 +53,12 @@ import { AlertSubscriptionModule } from './alert-subscription/alert-subscription
     IncidentModule,
     RouteModule,
 
-    // 🔔 Alerts (new)
     AlertModule,
     AlertSubscriptionModule,
   ],
 
   providers: [
+    // 🚦 تفعيل الحماية بشكل صحيح
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

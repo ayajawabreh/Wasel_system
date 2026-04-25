@@ -1,10 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Request } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
+
 import { CheckpointService } from './checkpoint.service';
 import { CreateCheckpointDto } from './dto/create-checkpoint.dto';
 import { UpdateCheckpointDto } from './dto/update-checkpoint.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+
 @Controller('checkpoints')
 export class CheckpointController {
   constructor(private readonly checkpointService: CheckpointService) {}
@@ -16,6 +19,8 @@ export class CheckpointController {
     return this.checkpointService.create(dto);
   }
 
+  // ✅ تعطيل throttling للقراءة
+  @SkipThrottle()
   @Get()
   findAll(
     @Query('status') status?: string,

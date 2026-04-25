@@ -1,32 +1,39 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { AlertSubscription } from '../../alert-subscription/entities/alert-subscription.entity';
 
 @Entity('alert')
 export class Alert {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  user_id: number;
+  user_id!: number;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user!: User;
 
   @Column()
-  incident_id: number;
+  incident_id!: number;
 
   @Column({ nullable: true })
-  subscription_id: number;
+  subscription_id!: number;
 
   @ManyToOne(() => AlertSubscription)
   @JoinColumn({ name: 'subscription_id' })
-  subscription: AlertSubscription;
+  subscription!: AlertSubscription;
 
   @Column()
-  message: string;
+  message!: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 }

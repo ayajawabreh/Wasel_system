@@ -1,4 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Request } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
+
 import { IncidentService } from './incident.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { UpdateIncidentDto } from './dto/update-incident.dto';
@@ -16,6 +18,8 @@ export class IncidentController {
     return this.incidentService.create(dto, req.user.id);
   }
 
+  // ✅ تعطيل throttling للقراءة
+  @SkipThrottle()
   @Get()
   findAll(
     @Query('type') type?: string,
